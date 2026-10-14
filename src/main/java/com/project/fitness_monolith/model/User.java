@@ -24,11 +24,16 @@ import java.util.UUID;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+
+    @Column(unique = true)
     private  String id;
     private  String email;
     private  String password;
     private  String firstName;
     private String lastName;
+
+    @Enumerated(EnumType.STRING)
+    private UserRole role=UserRole.USER;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

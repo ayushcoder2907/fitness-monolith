@@ -4,9 +4,11 @@ import java.util.List;
 import com.project.fitness_monolith.dto.RegisterRequest;
 import com.project.fitness_monolith.dto.UserResponse;
 import com.project.fitness_monolith.model.User;
+import com.project.fitness_monolith.model.UserRole;
 import com.project.fitness_monolith.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 //import org.hibernate.mapping.List;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -17,13 +19,16 @@ import java.time.ZoneOffset;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public UserResponse register(RegisterRequest request){
+        UserRole role= request.getRole()!=null? request.getRole() : UserRole.USER;
         User user=User.builder()
                 .email(request.getEmail())
                         .firstName((request.getFirstName()))
                                 .lastName((request.getLastName()))
-                .password(request.getPassword())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .role(role)
                 .build();
 //        User user=new User(
 //                null,
@@ -42,7 +47,7 @@ public class UserService {
         return mapToResponse(savedUser);
 
     }
-    private UserResponse mapToResponse(User savedUser ) {
+    public UserResponse mapToResponse(User savedUser) {
         UserResponse response = new UserResponse();
         response.setId(savedUser.getId());
         response.setEmail(savedUser.getEmail());
@@ -54,4 +59,7 @@ public class UserService {
         return response;
     }
 
+    public User findByEmail(String email) {
+        return null;
+    }
 }
