@@ -9,6 +9,7 @@ import com.project.fitness_monolith.dto.UserResponse;
 import com.project.fitness_monolith.model.User;
 import com.project.fitness_monolith.security.JwtUtils;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +29,7 @@ public class AuthController {
 
     // Register user
     @PostMapping("/register")
-    public UserResponse register(@RequestBody RegisterRequest user) {
+    public UserResponse register(@Valid @RequestBody RegisterRequest user) {
         return userService.register(user);
     }
 
